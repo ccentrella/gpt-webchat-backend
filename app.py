@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app, origins=['http://localhost:*'])
 load_dotenv()
 
-client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+client = OpenAI()
 
 @app.get('/health')
 def index():
@@ -31,13 +31,13 @@ def get_conversations():
 def get_response():
     prompt = request.json['prompt']
     model = request.json['model']
-    
+
     response = client.responses.create(
-        model={model},
-        input={prompt}
+        model=model,
+        input=prompt
     )
 
-    return response;
+    return response.output_text;
 
 
 if __name__ == '__main__':
